@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to the Microblog</h1>
+    <p class="lead">This is a simple microblogging platform built with Flask.</p>
+    <hr class="my-4">
+    <p>Register or login to start posting and commenting.</p>
+    <a class="btn btn-primary btn-lg" href="{{ url_for('auth.register') }}" role="button">Register</a>
+    <a class="btn btn-secondary btn-lg" href="{{ url_for('auth.login') }}" role="button">Login</a>
+</div>
+{% endblock %}

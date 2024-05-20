@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>{{ post.title }}</h2>
+        <p>{{ post.content }}</p>
+        <small class="text-muted">Posted by {{ post.user.username }} on {{ post.date_posted }}</small>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-md-12">
+        <h3>Comments</h3>
+        <form method="POST" action="{{ url_for('blog.post_comments', post_id=post.id) }}">
+            <div class="form-group">
+                <label for="content">Add a comment</label>
+                <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        {% for comment in comments %}
+        <div class="media mt-3">
+            <img src="https://via.placeholder.com/50" class="mr-3" alt="...">
+            <div class="media-body">
+                <h5 class="mt-0">{{ comment.user.username }}</h5>
+                <p>{{ comment.content }}</p>
+                <small class="text-muted">{{ comment.date_posted }}</small>
+                <form method="POST" action="{{ url_for('blog.post_comments', post_id=post.id) }}">
+                    <div class="form-group mt-2">
+                        <textarea class="form-control" name="content" rows="2" placeholder="Reply to this comment" required></textarea>
+                        <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                    </div>
+                    <button type="submit" class="btn btn-secondary btn-sm">Reply</button>
+                </form>
+                {% if comment.replies %}
+                <div class="ml-4">
+                    {% for reply in comment.replies %}
+                    <div class="media mt-3">
+                        <img src="https://via.placeholder.com/50" class="mr-3" alt="...">
+                        <div class="media-body">
+                            <h5 class="mt-0">{{ reply.user.username }}</h5>
+                            <p>{{ reply.content }}</p>
+                            <small class="text-muted">{{ reply.date_posted }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
